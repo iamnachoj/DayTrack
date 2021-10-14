@@ -1,20 +1,39 @@
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>DayTrack</title>
-  </head>
-  <body>
-      <h1><%= day %></h1>
-      <ul>
-        <li>Buy food</li>
-        <li>Take dog out/li>
-        <li>Code more</li>
-        <li><%= newListItem %></li>
-      <form class="" action="/" method="post">
-         <input type="text" name="newItem" placeholder="add task">
-         <button type="submit" name="button">Add</button>
-      </form>
-  </body>
+
+<head>
+  <!-- this link takes the styles from the public folder -->
+  <link rel="stylesheet" href="/css/styles.css">
+  <!-- google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;700&display=swap" rel="stylesheet">
+  <!-- resonsive meta tag -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <title>DayTrack</title>
+</head>
+
+<body>
+  <div class="box" id="heading">
+    <h1><%= day %></h1>
+  </div>
+  <div class="box">
+    <!-- For loop that loops through the newItems array and creates a div with a paragraph inside for each of the items withing that array using templating -->
+    <%   for(var i=0;i<newItems.length;i++){   %>
+    <div class="item">
+      <input type="checkbox">
+      <p><%= newItems[i] %></p>
+    </div>
+    <%  }  %>
+    <form class="item" action="/" method="post">
+      <input class="form-input"type="text" name="newItem" placeholder="Add task">
+      <button type="submit" name="button">+</button>
+    </form>
+  </div>
+
+ <!-- Form that fires the post method on "/" path, and sends to the server the value of the input inside the form -->
+
+</body>
+
 </html>
