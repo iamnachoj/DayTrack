@@ -25,10 +25,10 @@ const itemsSchema = {
   name: String,
 };
 
-//mongoose Model (models are capitalize)
+//mongoose Model (models are capitalize) <-------------------comes to be the collection
 const Item = mongoose.model("Item", itemsSchema);
 
-//Mongoose Documents
+//Mongoose Documents to be included
 const item1 = new Item({
   name: "Welcome to your todo list!",
 });
@@ -41,19 +41,21 @@ const item3 = new Item({
 
 const defaultItems = [item1, item2, item3];
 
-Item.insertMany(defaultItems, function (err) {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log("Successfully added");
-  }
-});
 //Functionality for the home route (/)
 app.get("/", function (req, res) {
   //day variable taken from date module
   let day = date.getDate();
 
   Item.find({}, function (err, foundItems) {
+    if (foundItems.length === 0) {
+      Item.insertMany(defaultItems, function (err) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("Successfully added");
+        }
+      });
+    }
     //render the homepage list taken from EJS files
     res.render("list", { listTitle: day, newItems: foundItems });
   });
