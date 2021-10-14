@@ -1,20 +1,6 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
 
-<head>
-  <!-- this link takes the styles from the public folder -->
-  <link rel="stylesheet" href="/css/styles.css">
-  <!-- google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;700&display=swap" rel="stylesheet">
-  <!-- resonsive meta tag -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta charset="utf-8">
-  <title>DayTrack</title>
-</head>
+  <%- include("header") -%>
 
-<body>
   <div class="box" id="heading">
     <h1><%= listTitle %></h1>
   </div>
@@ -26,14 +12,10 @@
       <p><%= newItems[i] %></p>
     </div>
     <%  }  %>
+    <!-- Form that fires the post method on "/" path, and sends to the server the value of the input inside the form -->
     <form class="item" action="/" method="post">
       <input type="text" name="newItem" placeholder="Add task" autocomplete="off">
       <button type="submit" name="button" value="<%= listTitle %>">+</button>
     </form>
   </div>
-
- <!-- Form that fires the post method on "/" path, and sends to the server the value of the input inside the form -->
-
-</body>
-
-</html>
+<%- include("footer") -%>

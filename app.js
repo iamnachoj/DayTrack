@@ -27,13 +27,12 @@ app.get("/", function (req, res) {
 
 app.post("/", function (req, res) {
   // this fires by the form in the list.ejs file. it stores the value of the form's input in a variable called item.
+  let item = req.body.newItem;
   //now it checks whether the button from the form hast the Books Title or the date from the basic todo List. depending on which one, it will post the typed data in one list or the other.
   if (req.body.button === "Books to read") {
-    let book = req.body.newItem;
-    bookItems.push(book);
+    bookItems.push(item);
     res.redirect("/Books");
   } else {
-    let item = req.body.newItem;
     items.push(item); // and then it pushes it into the items global array
     res.redirect("/"); // refreshes the site, redirecting to the homepage (now showing up with the new, added item)
   }
@@ -42,6 +41,11 @@ app.post("/", function (req, res) {
 //Functionality for the Books route
 app.get("/Books", function (req, res) {
   res.render("list", { listTitle: "Books to read", newItems: bookItems });
+});
+
+//Functionality for the about route
+app.get("/About", function (req, res) {
+  res.render("about");
 });
 
 //server

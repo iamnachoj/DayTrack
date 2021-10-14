@@ -95,6 +95,8 @@ input[type="text"]:focus {
 }
 
 footer {
+  font-size: 15px;
+  font-weight: 700;
   color: white;
   color: rgba(0, 0, 0, 0.5);
   text-align: center;
