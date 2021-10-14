@@ -22,9 +22,9 @@ mongoose.connect("mongodb://localhost:27017/todolistDB", {
   useNewUrlParser: true,
 });
 
-//mongoose Model (models are capitalized). Comes to be the collection. see more on mongoose docs.
+//mongoose Models (models are capitalized). They come to be the collection. see more on mongoose docs.
 const Item = mongoose.model("Item", { name: String });
-
+const BookItem = mongoose.model("BookItem", { name: String });
 //Mongoose Documents to be included when DB is empty
 const item1 = new Item({
   name: "Welcome to your todo list!",
@@ -61,20 +61,36 @@ app.get("/", function (req, res) {
 
 app.post("/", function (req, res) {
   // this fires by the form in the list.ejs file. it stores the value of the form's input in a variable called item.
-  let item = req.body.newItem;
-  //now it checks whether the button from the form hast the Books Title or the date from the basic todo List. depending on which one, it will post the typed data in one list or the other.
+  let itemName = req.body.newItem;
+
+  let item = new Item({
+    // this creates the document out of the fetched data received from the req.body.newItem
+    name: itemName,
+  });
+
+  //now it checks whether the button from the form has the Books Title or the date from the basic todo List.
+  //depending on which one, it will post the typed data in one list or the other.
   if (req.body.button === "Books to read") {
-    bookItems.push(item);
+    BookItem.insertMany(item, function (err) {
+      //this function pushes the item to the BookItem collection
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Successfully added");
+      }
+    });
     res.redirect("/Books");
   } else {
-    items.push(item); // and then it pushes it into the items global array
+    item.save(); // and then it pushes it into the items collection on DB
     res.redirect("/"); // refreshes the site, redirecting to the homepage (now showing up with the new, added item)
   }
 });
 
 //Functionality for the Books route
 app.get("/Books", function (req, res) {
-  res.render("list", { listTitle: "Books to read", newItems: bookItems });
+  BookItem.find({}, function (err, foundItems) {
+    res.render("list", { listTitle: "Books to read", newItems: foundItems });
+  });
 });
 
 //Functionality for the about route
