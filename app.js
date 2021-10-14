@@ -1,7 +1,9 @@
+// Main dependencies are express, bodyParser and Mongoose. It is also needed to import a custom module called date.js.
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-//Here we are requiring a custom module that is located in our same directory, that is why is handy to write __dirname
+
+//Here we are requiring the custom module that is located in our same directory, that is why is handy to write __dirname
 const date = require(__dirname + "/date.js"); //this will allow this file to use any exports from date.js
 const app = express();
 
@@ -12,23 +14,18 @@ app.use(express.static("public")); // tells express to serve the public folder f
 // console.log(date.getDate()); // Use this for testing what date.getDate() or date.getTime() does.
 
 //mock data
-// const items = ["Buy food", "Cook food", "Eat food"]; // it is possible to store arrays in const variables because in JS consts allow to get their data changed by pull and push
+// const items = ["Buy food", "Cook food", "Eat food"]; // it is possible to store arrays in const variables because in JavaScript consts allow to get their data changed by pull and push
 // const bookItems = ["The Alchemist", "The four"];
 
-//mongoDB connection via mongoose
+//mongoDB connection via mongoose to the local DB
 mongoose.connect("mongodb://localhost:27017/todolistDB", {
   useNewUrlParser: true,
 });
 
-//mongoose schema
-const itemsSchema = {
-  name: String,
-};
+//mongoose Model (models are capitalized). Comes to be the collection. see more on mongoose docs.
+const Item = mongoose.model("Item", { name: String });
 
-//mongoose Model (models are capitalize) <-------------------comes to be the collection
-const Item = mongoose.model("Item", itemsSchema);
-
-//Mongoose Documents to be included
+//Mongoose Documents to be included when DB is empty
 const item1 = new Item({
   name: "Welcome to your todo list!",
 });
@@ -38,17 +35,18 @@ const item2 = new Item({
 const item3 = new Item({
   name: "<-- Hit this to delete an item",
 });
-
 const defaultItems = [item1, item2, item3];
 
 //Functionality for the home route (/)
 app.get("/", function (req, res) {
   //day variable taken from date module
-  let day = date.getDate();
+  let day = date.getDate(); // function taken from the date.js module. It store the date in a specific format.
 
   Item.find({}, function (err, foundItems) {
+    // this function Item.find() goes through all items in the collection (the empty object means no filter are implemented.)
     if (foundItems.length === 0) {
       Item.insertMany(defaultItems, function (err) {
+        // inserts the items mentioned before in case there isn't any already
         if (err) {
           console.log(err);
         } else {
