@@ -16,7 +16,7 @@
 
 <body>
   <div class="box" id="heading">
-    <h1><%= day %></h1>
+    <h1><%= listTitle %></h1>
   </div>
   <div class="box">
     <!-- For loop that loops through the newItems array and creates a div with a paragraph inside for each of the items withing that array using templating -->
@@ -28,7 +28,7 @@
     <%  }  %>
     <form class="item" action="/" method="post">
       <input type="text" name="newItem" placeholder="Add task" autocomplete="off">
-      <button type="submit" name="button">+</button>
+      <button type="submit" name="button" value="<%= listTitle %>">+</button>
     </form>
   </div>
 
