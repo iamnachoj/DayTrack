@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-
+const mongoose = require("mongoose");
 //Here we are requiring a custom module that is located in our same directory, that is why is handy to write __dirname
 const date = require(__dirname + "/date.js"); //this will allow this file to use any exports from date.js
 const app = express();
@@ -12,8 +12,8 @@ app.use(express.static("public")); // tells express to serve the public folder f
 // console.log(date.getDate()); // Use this for testing what date.getDate() or date.getTime() does.
 
 //mock data
-let items = ["Buy food", "Cook food", "Eat food"];
-let bookItems = ["The Alchemist", "The four"];
+// const items = ["Buy food", "Cook food", "Eat food"]; // it is possible to store arrays in const variables because in JS consts allow to get their data changed by pull and push
+// const bookItems = ["The Alchemist", "The four"];
 
 //Functionality for the home route (/)
 app.get("/", function (req, res) {
