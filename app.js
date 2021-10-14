@@ -41,7 +41,6 @@ const defaultItems = [item1, item2, item3];
 app.get("/", function (req, res) {
   //day variable taken from date module
   let day = date.getDate(); // function taken from the date.js module. It store the date in a specific format.
-
   Item.find({}, function (err, foundItems) {
     // this function Item.find() goes through all items in the collection (the empty object means no filter are implemented.)
     if (foundItems.length === 0) {
@@ -84,6 +83,26 @@ app.post("/", function (req, res) {
     item.save(); // and then it pushes it into the items collection on DB
     res.redirect("/"); // refreshes the site, redirecting to the homepage (now showing up with the new, added item)
   }
+});
+
+//functionality for deleting lists items
+app.post("/delete", function (req, res) {
+  const checkedItemId = req.body.checkbox;
+  Item.findByIdAndRemove(checkedItemId, function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Successfully removed");
+    }
+  });
+  BookItem.findByIdAndRemove(checkedItemId, function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Successfully removed");
+    }
+  });
+  res.redirect("/");
 });
 
 //Functionality for the Books route

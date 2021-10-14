@@ -7,9 +7,13 @@
   <div class="box">
         <!-- ForEach loop that loops through the newItems array and creates a div with a paragraph inside for each of the items withing that array using templating -->
     <%  newItems.forEach(function(newItem){  %>
-      <form>
+      <form action="/delete" method="post">
         <div class="item">
-          <input type="checkbox">
+          <input type="checkbox" name="checkbox" value="<%= newItem._id %>" onChange="this.form.submit()">
+          <%# what's this input doing? %>
+          <%# all this form is being printed in the html file once for every item in the newItems array %>
+          <%# then, this checkbox will have the method submit() with the property onChange. It means it will fire the method post on the /delete route when pressed %>
+          <%# it's value has been assigned to be the item's name, in order to later avoid confusion %>
           <p><%= newItem.name %></p>
         </div>
       </form>
