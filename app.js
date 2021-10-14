@@ -36,26 +36,31 @@ const item3 = new Item({
   name: "<-- Hit this to delete an item",
 });
 const defaultItems = [item1, item2, item3];
-
+Item.find({}, function (err, foundItems) {
+  if (foundItems.length === 0) {
+    Item.insertMany(defaultItems, function (err) {
+      // inserts the items mentioned before in case there isn't any already
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Successfully added");
+      }
+    });
+  }
+});
 //Functionality for the home route (/)
 app.get("/", function (req, res) {
   //day variable taken from date module
   let day = date.getDate(); // function taken from the date.js module. It store the date in a specific format.
   Item.find({}, function (err, foundItems) {
     // this function Item.find() goes through all items in the collection (the empty object means no filter are implemented.)
-    if (foundItems.length === 0) {
-      Item.insertMany(defaultItems, function (err) {
-        // inserts the items mentioned before in case there isn't any already
-        if (err) {
-          console.log(err);
-        } else {
-          console.log("Successfully added");
-        }
-      });
-    }
     //render the homepage list taken from EJS files
     res.render("list", { listTitle: day, newItems: foundItems });
   });
+});
+
+app.get("/:customListName", function (req, res) {
+  console.log(req.params.customListName);
 });
 
 app.post("/", function (req, res) {
@@ -66,23 +71,8 @@ app.post("/", function (req, res) {
     // this creates the document out of the fetched data received from the req.body.newItem
     name: itemName,
   });
-
-  //now it checks whether the button from the form has the Books Title or the date from the basic todo List.
-  //depending on which one, it will post the typed data in one list or the other.
-  if (req.body.button === "Books to read") {
-    BookItem.insertMany(item, function (err) {
-      //this function pushes the item to the BookItem collection
-      if (err) {
-        console.log(err);
-      } else {
-        console.log("Successfully added");
-      }
-    });
-    res.redirect("/Books");
-  } else {
-    item.save(); // and then it pushes it into the items collection on DB
-    res.redirect("/"); // refreshes the site, redirecting to the homepage (now showing up with the new, added item)
-  }
+  item.save(); // and then it pushes it into the items collection on DB
+  res.redirect("/"); // refreshes the site, redirecting to the homepage (now showing up with the new, added item)
 });
 
 //functionality for deleting lists items
@@ -95,21 +85,7 @@ app.post("/delete", function (req, res) {
       console.log("Successfully removed");
     }
   });
-  BookItem.findByIdAndRemove(checkedItemId, function (err) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("Successfully removed");
-    }
-  });
   res.redirect("/");
-});
-
-//Functionality for the Books route
-app.get("/Books", function (req, res) {
-  BookItem.find({}, function (err, foundItems) {
-    res.render("list", { listTitle: "Books to read", newItems: foundItems });
-  });
 });
 
 //Functionality for the about route
