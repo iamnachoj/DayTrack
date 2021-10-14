@@ -12,12 +12,10 @@ function getDate() {
     month: "long",
     year: "numeric",
   };
-  let day = today.toLocaleDateString("en-US", options);
-  return day;
+  return today.toLocaleDateString("en-US", options);
 }
 
 function getTime() {
   let today = new Date();
-  let time = today.toLocaleTimeString("en-US");
-  return time;
+  return today.toLocaleTimeString("en-US");
 }
