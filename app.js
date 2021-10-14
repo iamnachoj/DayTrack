@@ -22,9 +22,16 @@ mongoose.connect("mongodb://localhost:27017/todolistDB", {
   useNewUrlParser: true,
 });
 
+//Schemas
+const itemsSchema = { name: String };
+const listSchema = {
+  name: String,
+  items: [itemsSchema],
+};
+
 //mongoose Models (models are capitalized). They come to be the collection. see more on mongoose docs.
-const Item = mongoose.model("Item", { name: String });
-const BookItem = mongoose.model("BookItem", { name: String });
+const Item = mongoose.model("Item", itemsSchema);
+const List = mongoose.model("List", listSchema);
 //Mongoose Documents to be included when DB is empty
 const item1 = new Item({
   name: "Welcome to your todo list!",
@@ -36,10 +43,11 @@ const item3 = new Item({
   name: "<-- Hit this to delete an item",
 });
 const defaultItems = [item1, item2, item3];
+
 Item.find({}, function (err, foundItems) {
   if (foundItems.length === 0) {
     Item.insertMany(defaultItems, function (err) {
-      // inserts the items mentioned before in case there isn't any already
+      // inserts the items mentioned before in case there isn't any already.
       if (err) {
         console.log(err);
       } else {
@@ -48,6 +56,7 @@ Item.find({}, function (err, foundItems) {
     });
   }
 });
+
 //Functionality for the home route (/)
 app.get("/", function (req, res) {
   //day variable taken from date module
@@ -59,8 +68,22 @@ app.get("/", function (req, res) {
   });
 });
 
+//Express Route Parameters
 app.get("/:customListName", function (req, res) {
-  console.log(req.params.customListName);
+  const customListName = req.params.customListName;
+  //this below, creates a new document of a list, and stores it into the collection List (but only if it does not exist already)
+  List.findOne({ name: customListName }, function (err, results) {
+    // here it tries to find it to check if it exists already or not.
+    if (results) {
+      console.log("exists already"); // if it exists already, it just console logs it and does not create it again
+    } else {
+      const list = new List({
+        name: customListName,
+        items: defaultItems,
+      });
+      list.save();
+    }
+  });
 });
 
 app.post("/", function (req, res) {
