@@ -9,7 +9,8 @@ app.set("view engine", "ejs"); // sets EJS to work as the view engine
 app.use(bodyParser.urlencoded({ extended: true })); // sets bodyParser
 app.use(express.static("public")); // tells express to serve the public folder for styling or other static sites
 
-console.log(date);
+// console.log(date()); Use this for testing what date() does.
+
 //mock data
 let items = ["Buy food", "Cook food", "Eat food"];
 let bookItems = ["The Alchemist", "The four"];
