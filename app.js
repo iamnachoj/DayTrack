@@ -9,7 +9,7 @@ app.set("view engine", "ejs"); // sets EJS to work as the view engine
 app.use(bodyParser.urlencoded({ extended: true })); // sets bodyParser
 app.use(express.static("public")); // tells express to serve the public folder for styling or other static sites
 
-// console.log(date()); Use this for testing what date() does.
+// console.log(date.getDate()); // Use this for testing what date.getDate() or date.getTime() does.
 
 //mock data
 let items = ["Buy food", "Cook food", "Eat food"];
@@ -18,7 +18,7 @@ let bookItems = ["The Alchemist", "The four"];
 //Functionality for the home route (/)
 app.get("/", function (req, res) {
   //day variable taken from date module
-  let day = date();
+  let day = date.getDate();
   //render the homepage list taken from EJS files
   res.render("list", { listTitle: day, newItems: items });
 });
