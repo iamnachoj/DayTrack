@@ -1,27 +1,24 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 
+//Here we are requiring a custom module that is located in our same directory, that is why is handy to write __dirname
+const date = require(__dirname + "/date.js"); //this will allow this file to use any exports from date.js
 const app = express();
 
 app.set("view engine", "ejs"); // sets EJS to work as the view engine
 app.use(bodyParser.urlencoded({ extended: true })); // sets bodyParser
 app.use(express.static("public")); // tells express to serve the public folder for styling or other static sites
 
+console.log(date);
 //mock data
 let items = ["Buy food", "Cook food", "Eat food"];
 let bookItems = ["The Alchemist", "The four"];
 
 //Functionality for the home route (/)
 app.get("/", function (req, res) {
-  let today = new Date();
-  let options = {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  };
-  let day = today.toLocaleDateString("en-US", options);
-
+  //day variable taken from date module
+  let day = date();
+  //render the homepage list taken from EJS files
   res.render("list", { listTitle: day, newItems: items });
 });
 
