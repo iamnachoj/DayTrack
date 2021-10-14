@@ -15,12 +15,48 @@ app.use(express.static("public")); // tells express to serve the public folder f
 // const items = ["Buy food", "Cook food", "Eat food"]; // it is possible to store arrays in const variables because in JS consts allow to get their data changed by pull and push
 // const bookItems = ["The Alchemist", "The four"];
 
+//mongoDB connection via mongoose
+mongoose.connect("mongodb://localhost:27017/todolistDB", {
+  useNewUrlParser: true,
+});
+
+//mongoose schema
+const itemsSchema = {
+  name: String,
+};
+
+//mongoose Model (models are capitalize)
+const Item = mongoose.model("Item", itemsSchema);
+
+//Mongoose Documents
+const item1 = new Item({
+  name: "Welcome to your todo list!",
+});
+const item2 = new Item({
+  name: "Hit the + button to add a new item",
+});
+const item3 = new Item({
+  name: "<-- Hit this to delete an item",
+});
+
+const defaultItems = [item1, item2, item3];
+
+Item.insertMany(defaultItems, function (err) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("Successfully added");
+  }
+});
 //Functionality for the home route (/)
 app.get("/", function (req, res) {
   //day variable taken from date module
   let day = date.getDate();
-  //render the homepage list taken from EJS files
-  res.render("list", { listTitle: day, newItems: items });
+
+  Item.find({}, function (err, foundItems) {
+    //render the homepage list taken from EJS files
+    res.render("list", { listTitle: day, newItems: foundItems });
+  });
 });
 
 app.post("/", function (req, res) {
