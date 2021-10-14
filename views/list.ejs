@@ -7,10 +7,12 @@
   <div class="box">
         <!-- ForEach loop that loops through the newItems array and creates a div with a paragraph inside for each of the items withing that array using templating -->
     <%  newItems.forEach(function(newItem){  %>
-      <div class="item">
-        <input type="checkbox">
-        <p><%= newItem.name %></p>
-      </div>
+      <form>
+        <div class="item">
+          <input type="checkbox">
+          <p><%= newItem.name %></p>
+        </div>
+      </form>
     <%  })                                   %>
 
     <!-- Form that fires the post method on "/" path, and sends to the server the value of the input inside the form -->
