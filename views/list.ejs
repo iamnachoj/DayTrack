@@ -5,13 +5,14 @@
     <h1><%= listTitle %></h1>
   </div>
   <div class="box">
-    <!-- For loop that loops through the newItems array and creates a div with a paragraph inside for each of the items withing that array using templating -->
-    <%   for(var i=0;i<newItems.length;i++){   %>
-    <div class="item">
-      <input type="checkbox">
-      <p><%= newItems[i] %></p>
-    </div>
-    <%  }  %>
+        <!-- ForEach loop that loops through the newItems array and creates a div with a paragraph inside for each of the items withing that array using templating -->
+    <%  newItems.forEach(function(newItem){  %>
+      <div class="item">
+        <input type="checkbox">
+        <p><%= newItem.name %></p>
+      </div>
+    <%  })                                   %>
+
     <!-- Form that fires the post method on "/" path, and sends to the server the value of the input inside the form -->
     <form class="item" action="/" method="post">
       <input type="text" name="newItem" placeholder="Add task" autocomplete="off">
