@@ -111,15 +111,31 @@ app.post("/", function (req, res) {
 
 //functionality for deleting lists items
 app.post("/delete", function (req, res) {
-  const checkedItemId = req.body.checkbox;
-  Item.findByIdAndRemove(checkedItemId, function (err) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("Successfully removed");
-    }
-  });
-  res.redirect("/");
+  const checkedItemId = req.body.checkbox; // takes the id from the item checked
+  const listName = req.body.listName; // takes the name of the list from the hidden input
+  if (listName === date.getDate()) {
+    // if the list is the home-original one, it finds the item and removes it.
+    Item.findByIdAndRemove(checkedItemId, function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Successfully removed");
+      }
+    });
+    res.redirect("/");
+    // However, if the item is in another list, means it is in a custom list
+  } else {
+    //with this function below, we find a list in lists collection that has the name of the title and update it (pulling out the item from the list)
+    List.findOneAndUpdate(
+      { name: listName }, // the condition of the name of the title. This is the way we find the correct list
+      { $pull: { items: { _id: checkedItemId } } }, // then the pull method from Mongo. This makes a pull from the items within the list, with the condition of the _id
+      function (err, foundList) {
+        if (!err) {
+          res.redirect("/" + listName); // redirect to the custom path
+        }
+      }
+    );
+  }
 });
 
 //Functionality for the about route
