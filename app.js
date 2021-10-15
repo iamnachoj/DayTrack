@@ -76,12 +76,14 @@ app.get("/:customListName", function (req, res) {
     // here it tries to find it to check if it exists already or not.
     if (results) {
       console.log("exists already"); // if it exists already, it just console logs it and does not create it again
+      res.render("list", { listTitle: results.name, newItems: results.items });
     } else {
       const list = new List({
         name: customListName,
         items: defaultItems,
       });
       list.save();
+      res.redirect("/" + customListName);
     }
   });
 });
