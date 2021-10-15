@@ -1,8 +1,8 @@
-// Main dependencies are express, bodyParser and Mongoose. It is also needed to import a custom module called date.js.
+// Main dependencies are express, bodyParser and Mongoose. It is also needed to import lodash and a custom module called date.js.
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-
+const _ = require("lodash");
 //Here we are requiring the custom module that is located in our same directory, that is why is handy to write __dirname
 const date = require(__dirname + "/date.js"); //this will allow this file to use any exports from date.js
 const app = express();
@@ -70,7 +70,7 @@ app.get("/", function (req, res) {
 
 //Express Route Parameters
 app.get("/:customListName", function (req, res) {
-  const customListName = req.params.customListName;
+  const customListName = _.capitalize(req.params.customListName);
   //this below, creates a new document of a list, and stores it into the collection List (but only if it does not exist already)
   List.findOne({ name: customListName }, function (err, results) {
     // here it tries to find it to check if it exists already or not.
