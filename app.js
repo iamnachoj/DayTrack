@@ -18,7 +18,12 @@ app.use(express.static("public")); // tells express to serve the public folder f
 // const bookItems = ["The Alchemist", "The four"];
 
 //mongoDB connection via mongoose to the local DB
-mongoose.connect("mongodb://localhost:27017/todolistDB", {
+// mongoose.connect("mongodb://localhost:27017/todolistDB", {
+//   useNewUrlParser: true,
+// });
+
+//mongoDB connection via mongoose to the ATLAS  DB
+mongoose.connect("mongodb+srv://iamnachoj:Ladefinitiva2012@cluster0.cbnyr.mongodb.net/todolistDB", {
   useNewUrlParser: true,
 });
 
@@ -144,6 +149,8 @@ app.get("/About", function (req, res) {
 });
 
 //server
-app.listen(3000, function () {
-  console.log("server started at port 3000");
-});
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3000;
+}
+app.listen(port, console.log("port started at port " + port));
