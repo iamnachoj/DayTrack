@@ -88,16 +88,25 @@ app.get("/:customListName", function (req, res) {
   });
 });
 
+//functionality for posting items
 app.post("/", function (req, res) {
   // this fires by the form in the list.ejs file. it stores the value of the form's input in a variable called item.
   let itemName = req.body.newItem;
-
+  let listName = req.body.list;
   let item = new Item({
     // this creates the document out of the fetched data received from the req.body.newItem
     name: itemName,
   });
-  item.save(); // and then it pushes it into the items collection on DB
-  res.redirect("/"); // refreshes the site, redirecting to the homepage (now showing up with the new, added item)
+  if (listName === date.getDate()) {
+    item.save(); // and then it pushes it into the items collection on DB
+    res.redirect("/"); // refreshes the site, redirecting to the homepage (now showing up with the new, added item)
+  } else {
+    List.findOne({ name: listName }, function (err, foundList) {
+      foundList.items.push(item);
+      foundList.save();
+      res.redirect("/" + listName);
+    });
+  }
 });
 
 //functionality for deleting lists items
