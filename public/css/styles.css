@@ -1,7 +1,7 @@
 html {
   background-color: #e4e9fd;
   background-image: -webkit-linear-gradient(65deg, #83e3bd 50%, #e4e9fd 50%);
-  min-height: 120%;
+  min-height: 100%;
   font-family: "Lato", sans-serif;
 }
 
@@ -96,8 +96,6 @@ input[type="text"]:focus {
 }
 
 footer {
-  position: absolute;
-  top: 110%;
   left: 0;
   right: 0;
   margin-left: auto;
