@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const _ = require("lodash");
+const favicon = require("serve-favicon");
 //Here we are requiring the custom module that is located in our same directory, that is why is handy to write __dirname
 const date = require(__dirname + "/date.js"); //this will allow this file to use any exports from date.js
 const app = express();
@@ -10,12 +11,8 @@ const app = express();
 app.set("view engine", "ejs"); // sets EJS to work as the view engine
 app.use(bodyParser.urlencoded({ extended: true })); // sets bodyParser
 app.use(express.static("public")); // tells express to serve the public folder for styling or other static sites
-
+app.use(favicon(__dirname + '/public/images/favicon.png'));
 // console.log(date.getDate()); // Use this for testing what date.getDate() or date.getTime() does.
-
-//mock data
-// const items = ["Buy food", "Cook food", "Eat food"]; // it is possible to store arrays in const variables because in JavaScript consts allow to get their data changed by pull and push
-// const bookItems = ["The Alchemist", "The four"];
 
 //mongoDB connection via mongoose to the local DB
 // mongoose.connect("mongodb://localhost:27017/todolistDB", {
